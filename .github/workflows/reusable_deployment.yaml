@@ -1,0 +1,53 @@
+name: Reusable - Deploy to environment
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        description: Environment to deploy to
+        required: true
+      runner:
+        type: string
+        description: Runner labels to use 
+        default: '[ ubuntu-latest ]'
+      artifact:
+        type: string
+        description: Artifact to deploy
+        default: app
+      application-name:
+        type: string
+        description: Application to run
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ${{ fromJson(inputs.runner) }}
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Download application
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact }}
+          path: ${{ github.workspace }}/${{ inputs.artifact }}
+      
+      - name: Use .NET 9.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+
+      - name: Deploy to ${{ inputs.environment }}
+        run: |
+          echo "Pre-deployment state:"
+          ls -la
+
+          mkdir ${{ inputs.environment }}
+          cp ${{ github.workspace }}/${{ inputs.artifact }}/* ${{ inputs.environment }}
+
+          echo "Post-deployment state:"
+          ls -la
+          ls -la ${{ inputs.environment }}
+
+          echo "Run the application"
+          chmod +x ${{ inputs.environment }}/${{ inputs.application-name }}
+          ${{ inputs.environment }}/${{ inputs.application-name }}
