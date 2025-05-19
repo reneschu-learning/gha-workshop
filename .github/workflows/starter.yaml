@@ -32,3 +32,9 @@ jobs:
         if: ${{ github.event.issue }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
+
+  second_job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello from second job"
+        name: Say hello again
