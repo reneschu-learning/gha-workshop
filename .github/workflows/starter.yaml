@@ -9,6 +9,10 @@ on:
     types:
       - opened
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   first_job:
     runs-on: ubuntu-latest
