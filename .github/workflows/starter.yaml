@@ -40,6 +40,12 @@ jobs:
   second_job:
     runs-on: ubuntu-latest
     needs: first_job
+    strategy:
+      matrix:
+        configuration: [ release, debug ]
+        platform: [ x86, x64 ]
     steps:
       - run: echo "Hello from second job"
         name: Say hello again
+
+      - run: echo "Running with platform ${{ matrix.platform }} and configuration ${{ matrix.configuration }}"
