@@ -3,7 +3,11 @@ name: First Sample Actions Workflow
 run-name: ${{ github.actor }} is learning GitHub Actions!
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
+
+  issues:
+    types:
+      - opened
 
 jobs:
   first_job:
@@ -14,3 +18,10 @@ jobs:
 
       - run: echo "Hello, ${{ github.actor }}"
         name: Greet the person who triggered the workflow
+
+      - run: |
+          gh issue comment ${{ github.event.issue.number }} -b "Hello from GitHub Actions! Thanks for opening this issue!"
+        name: React in issue
+        if: ${{ github.event.issue }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
