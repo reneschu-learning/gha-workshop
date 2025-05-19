@@ -3,11 +3,9 @@ description: Deploys a .NET 9 app and ensures there is the correct runtime insta
 inputs:
   environment:
     description: Environment to deploy to
-    type: string
     required: true
   application-name:
     description: Name of the application to run
-    type: string
     required: true
 runs:
   using: composite
@@ -32,3 +30,4 @@ runs:
         echo "Run the application"
         chmod +x ${{ inputs.environment }}/${{ inputs.application-name }}
         ${{ inputs.environment }}/${{ inputs.application-name }}
+      shell: bash
