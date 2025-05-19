@@ -34,7 +34,7 @@ jobs:
       - name: Checkout code (so we can use composite action)
         uses: actions/checkout@v4
         with:
-          path: ${{ github.workspace }}/actions
+          path: actions
       
       - name: Deploy application
         uses: ./actions/.github/actions/DeployDotnet9
