@@ -4,6 +4,10 @@ run-name: ${{ github.actor }} is learning GitHub Actions!
 
 on:
   workflow_dispatch:
+    inputs:
+      who-to-greet:
+        type: string
+        description: Who to greet
 
   issues:
     types:
@@ -23,7 +27,7 @@ jobs:
       - run: echo "Hello from GitHub Actions!"
         name: Say hello
 
-      - run: echo "Hello, ${{ github.actor }}"
+      - run: echo "Hello, ${{ inputs.who-to-greet || github.actor }}"
         name: Greet the person who triggered the workflow
 
       - run: |
