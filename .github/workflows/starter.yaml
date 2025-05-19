@@ -17,6 +17,9 @@ permissions:
   contents: read
   issues: write
 
+env:
+  MY_VAR: My Value
+
 jobs:
   first_job:
     runs-on: ubuntu-latest
@@ -27,7 +30,9 @@ jobs:
       - run: echo "Hello from GitHub Actions!"
         name: Say hello
 
-      - run: echo "Hello, ${{ inputs.who-to-greet || github.actor }}"
+      - run: |
+          echo "Hello, ${{ inputs.who-to-greet || github.actor }}"
+          echo "MY_VAR has value '${{ env.MY_VAR }}"
         name: Greet the person who triggered the workflow
 
       - run: |

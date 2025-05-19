@@ -1,0 +1,35 @@
+name: Simple CD Demo
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+         echo "Using username ${{ vars.USERNAME }} and password ${{ secrets.PASSWORD }}"
+        
+  deploy_to_dev:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: Dev
+    steps:
+      - run: |
+          echo "Using username ${{ vars.USERNAME }} and password ${{ secrets.PASSWORD }}"
+
+  deploy_to_test:
+    needs: deploy_to_dev
+    runs-on: ubuntu-latest
+    environment: Test
+    steps:
+      - run: |
+          echo "Using username ${{ vars.USERNAME }} and password ${{ secrets.PASSWORD }}"
+
+  deploy_to_prod:
+    needs: deploy_to_test
+    runs-on: ubuntu-latest
+    environment: Prod
+    steps:
+      - run: |
+          echo "Using username ${{ vars.USERNAME }} and password ${{ secrets.PASSWORD }}"
