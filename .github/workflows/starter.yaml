@@ -1,0 +1,16 @@
+name: First Sample Actions Workflow
+
+run-name: ${{ github.actor }} is learning GitHub Actions!
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  first_job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello from GitHub Actions!"
+        name: Say hello
+
+      - run: echo "Hello, ${{ github.actor }}"
+        name: Greet the person who triggered the workflow
