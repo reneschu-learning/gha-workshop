@@ -37,7 +37,7 @@ jobs:
           path: ${{ github.workspace }}/actions
       
       - name: Deploy application
-        uses: ${{ github.workspace}}/actions/.github/actions/DeployDotnet9
+        uses: ./actions/.github/actions/DeployDotnet9
         with:
           environment: ${{ inputs.environment }}
           application-name: ${{ inputs.application-name }}
