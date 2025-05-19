@@ -31,8 +31,13 @@ jobs:
           name: ${{ inputs.artifact }}
           path: ${{ github.workspace }}/${{ inputs.artifact }}
       
+      - name: Checkout code (so we can use composite action)
+        uses: actions/checkout@v4
+        with:
+          path: ${{ github.workspace }}/actions
+      
       - name: Deploy application
-        uses: ./.github/actions/DeployDotnet9
+        uses: ${{ github.workspace}}/actions/.github/actions/DeployDotnet9
         with:
           environment: ${{ inputs.environment }}
           application-name: ${{ inputs.application-name }}
