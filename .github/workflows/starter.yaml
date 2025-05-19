@@ -47,5 +47,6 @@ jobs:
     steps:
       - run: echo "Hello from second job"
         name: Say hello again
+        if: success() && matrix.configuration != 'debug'
 
       - run: echo "Running with platform ${{ matrix.platform }} and configuration ${{ matrix.configuration }}"
