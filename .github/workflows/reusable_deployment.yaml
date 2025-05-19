@@ -10,7 +10,7 @@ on:
       runner:
         type: string
         description: Runner labels to use 
-        default: '[ ubuntu-latest ]'
+        default: "[ 'ubuntu-latest' ]"
       artifact:
         type: string
         description: Artifact to deploy
