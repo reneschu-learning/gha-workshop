@@ -33,7 +33,7 @@ jobs:
 
   deploy_to_dev:
     needs: build
-    uses: ./.github/workflow/reusable_deployment.yaml
+    uses: ./reusable_deployment.yaml
     with:
       environment: Dev
       artifact: application
@@ -41,7 +41,7 @@ jobs:
 
   deploy_to_test:
     needs: deploy_to_dev
-    uses: ./.github/workflow/reusable_deployment.yaml
+    uses: ./reusable_deployment.yaml
     with:
       environment: Test
       artifact: application
@@ -49,7 +49,7 @@ jobs:
 
   deploy_to_prod:
     needs: deploy_to_test
-    uses: ./.github/workflow/reusable_deployment.yaml
+    uses: .reusable_deployment.yaml
     with:
       environment: Prod
       artifact: application
