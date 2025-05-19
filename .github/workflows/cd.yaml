@@ -34,13 +34,18 @@ jobs:
   deploy_to_dev:
     needs: build
     runs-on: ubuntu-latest
+    environment: Dev
     steps:
       - name: Download application
         uses: actions/download-artifact@v4
         with:
           name: app
           path: ${{ github.workspace }}/app
-        
+      
+      - name: Use .NET 9.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
 
       - name: Deploy to Dev
         run: |
