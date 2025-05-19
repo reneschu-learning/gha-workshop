@@ -23,6 +23,8 @@ env:
 jobs:
   first_job:
     runs-on: ubuntu-latest
+    outputs:
+      new-name: ${{ steps.new-name-creator.outputs.new-name }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -42,6 +44,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      - run: |
+          echo "Creating a new output called new-name"
+          echo "new-name=${{ inputs.who-to-greet || github.actor }}-greeted" >> $GITHUB_OUTPUT
+        id: new-name-creator
+        name: Create new output
+
+      - run: |
+          echo "Output was: ${{ steps.new-name-creator.outputs.new-name }}"
+        name: Use output from previous step
+
   second_job:
     runs-on: ubuntu-latest
     needs: first_job
@@ -54,4 +66,6 @@ jobs:
         name: Say hello again
         if: success() && matrix.configuration != 'debug'
 
-      - run: echo "Running with platform ${{ matrix.platform }} and configuration ${{ matrix.configuration }}"
+      - run: |
+          echo "Running with platform ${{ matrix.platform }} and configuration ${{ matrix.configuration }}"
+          echo "Output from previous job: ${{ needs.first_job.outputs.new-name }}"
