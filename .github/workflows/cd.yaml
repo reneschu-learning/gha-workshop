@@ -30,3 +30,30 @@ jobs:
         with:
           path: ./dist
           name: app
+
+  deploy_to_dev:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download application
+        uses: actions/download-artifact@v4
+        with:
+          name: app
+          path: ${{ github.workspace }}
+        
+
+      - name: Deploy to Dev
+        run: |
+          echo "Pre-deployment state:"
+          ls -la
+
+          mkdir dev
+          cp ${{ github.workspace }}/app/* dev
+
+          echo "Post-deployment state:"
+          ls -la
+          ls -la dev
+
+          echo "Run the application"
+          chmod +x dev/HelloWorld
+          dev/HelloWorld
