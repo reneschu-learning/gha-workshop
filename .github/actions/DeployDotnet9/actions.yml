@@ -1,0 +1,34 @@
+name: Deploy .NET 9 Console App
+description: Deploys a .NET 9 app and ensures there is the correct runtime installed.
+inputs:
+  environment:
+    description: Environment to deploy to
+    type: string
+    required: true
+  application-name:
+    description: Name of the application to run
+    type: string
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Use .NET 9.x
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.x
+
+    - name: Deploy to ${{ inputs.environment }}
+      run: |
+        echo "Pre-deployment state:"
+        ls -la
+
+        mkdir ${{ inputs.environment }}
+        cp ${{ github.workspace }}/${{ inputs.artifact }}/* ${{ inputs.environment }}
+
+        echo "Post-deployment state:"
+        ls -la
+        ls -la ${{ inputs.environment }}
+
+        echo "Run the application"
+        chmod +x ${{ inputs.environment }}/${{ inputs.application-name }}
+        ${{ inputs.environment }}/${{ inputs.application-name }}

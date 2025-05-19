@@ -31,23 +31,8 @@ jobs:
           name: ${{ inputs.artifact }}
           path: ${{ github.workspace }}/${{ inputs.artifact }}
       
-      - name: Use .NET 9.x
-        uses: actions/setup-dotnet@v4
+      - name: Deploy application
+        uses: ./.github/actions/DeployDotnet9
         with:
-          dotnet-version: 9.x
-
-      - name: Deploy to ${{ inputs.environment }}
-        run: |
-          echo "Pre-deployment state:"
-          ls -la
-
-          mkdir ${{ inputs.environment }}
-          cp ${{ github.workspace }}/${{ inputs.artifact }}/* ${{ inputs.environment }}
-
-          echo "Post-deployment state:"
-          ls -la
-          ls -la ${{ inputs.environment }}
-
-          echo "Run the application"
-          chmod +x ${{ inputs.environment }}/${{ inputs.application-name }}
-          ${{ inputs.environment }}/${{ inputs.application-name }}
+          environment: ${{ inputs.environment }}
+          application-name: ${{ inputs.application-name }}
