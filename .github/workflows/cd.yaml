@@ -1,35 +1,32 @@
-name: Simple CD Demo
+name: Simple .NET Console App Workflow
 
 on:
   push:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/**'
+
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-         echo "Using username ${{ vars.USERNAME }} and password ${{ secrets.PASSWORD }}"
-        
-  deploy_to_dev:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: Dev
-    steps:
-      - run: |
-          echo "Using username ${{ vars.USERNAME }} and password ${{ secrets.PASSWORD }}"
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  deploy_to_test:
-    needs: deploy_to_dev
-    runs-on: ubuntu-latest
-    environment: Test
-    steps:
-      - run: |
-          echo "Using username ${{ vars.USERNAME }} and password ${{ secrets.PASSWORD }}"
+      - name: Use .NET 9.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+      
+      - name: Publish .NET project
+        run: |
+          dotnet publish -c Release -o ./dist ./HelloWorld/HelloWorld.csproj
 
-  deploy_to_prod:
-    needs: deploy_to_test
-    runs-on: ubuntu-latest
-    environment: Prod
-    steps:
-      - run: |
-          echo "Using username ${{ vars.USERNAME }} and password ${{ secrets.PASSWORD }}"
+      - name: Publish application as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./dist
+          name: app
